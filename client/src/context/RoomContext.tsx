@@ -3,9 +3,11 @@ import { createContext, useEffect, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Peer, { MediaConnection } from 'peerjs';
 import { v4 as uuidV4 } from 'uuid'
-import { peerReducer } from './peerReducer';
-import { addPeerAction, removePeerAction } from './peerActions';
+import { peerReducer } from '../reducers/peerReducer';
+import { addPeerAction, removePeerAction } from '../reducers/peerActions';
 import { IMessage } from '../types/chat';
+import { chatReducer } from '../reducers/chatReducer';
+import { addHistoryAction, addMessageAction, toggleChatAction } from '../reducers/chatActions';
 
 const WS = "http://localhost:8080";
 
@@ -21,6 +23,10 @@ export const RoomProvider = ({ children }: any) => {
     const [peers, dispatch] = useReducer(peerReducer, {});
     const [screenSharingId, setScreenSharingId] = useState<string>("")
     const [roomId, setRoomId] = useState<string>("")
+    const [chat, chatDispatch] = useReducer(chatReducer,{
+        messages:[],
+        isChatOpen: false,
+    });
 
     const enterRoom = ({ roomId }: { roomId: string }) => {
         navigate(`room/${roomId}`)
@@ -71,11 +77,19 @@ export const RoomProvider = ({ children }: any) => {
             timestamp: new Date().getTime().toString(),
             author: me?.id || "",
         }
+        chatDispatch(addMessageAction(messageData))
         ws.emit("send-message",roomId,messageData)
     }
     const addMessage = (message: IMessage) => {
-        console.log(message);
+        chatDispatch(addMessageAction(message))
         
+    }
+    const addHistory = (message: IMessage[]) => {
+        chatDispatch(addHistoryAction(message))
+        
+    }
+    const toggleChat = () => {
+        chatDispatch(toggleChatAction(chat.isChatOpen))
     }
     useEffect(() => {
         const meId = uuidV4()
@@ -93,7 +107,7 @@ export const RoomProvider = ({ children }: any) => {
         ws.on('user-started-sharing', (peerId) => setScreenSharingId(peerId))
         ws.on('user-stopped-sharing',()=>setScreenSharingId(""))
         ws.on("add-message",addMessage)
-        ws.on("get-messages",(messages)=>console.log(messages))
+        ws.on("get-messages",addHistory)
 
         return () => {
             ws.off("room-created")
@@ -128,7 +142,7 @@ export const RoomProvider = ({ children }: any) => {
             })
         })
     }, [me,stream])
-    return (<RoomContext.Provider value={{ ws, me, stream, peers, shareScreen,screenStream, screenSharingId, setRoomId , sendMessage}}>
+    return (<RoomContext.Provider value={{ ws, me, stream, peers, chat,toggleChat, shareScreen,screenStream, screenSharingId, setRoomId , sendMessage}}>
         {children}
     </RoomContext.Provider>)
 }

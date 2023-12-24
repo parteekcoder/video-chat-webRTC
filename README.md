@@ -14,4 +14,4 @@ WebRTC, WebSockets, Express, Nodejs, React
 ## To start the project
 
 - Start frontend [client](https://github.com/parteekcoder/video-chat-webRTC/tree/master/client/README.md)
-- Start Backend [server](https://github.com/parteekcoder/video-chat-webRTC/tree/master/client/README.md)
+- Start Backend [server](https://github.com/parteekcoder/video-chat-webRTC/tree/master/server/README.md)
