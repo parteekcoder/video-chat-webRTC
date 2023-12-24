@@ -1,5 +1,3 @@
-node_modules
-dist
-logs
-*.logs
-*.env
+/server/node_modules
+/server/dist
+/client/node_modules
