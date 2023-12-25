@@ -15,15 +15,14 @@ WebRTC, WebSockets, Express, Nodejs, React
 
 - Home Page - It shows option to join an existing meeting or creating a new meeting
 
-![Home Page](https://github.com/parteekcoder/video-chat-webRTC/tree/master/project-images/1.png)
+<img src="https://github.com/parteekcoder/video-chat-webRTC/tree/master/project-images/1.png"/>
 
 - Room Page - It shows the videos of the participents, Chat box, and option to share screen
 
-![Room Page](https://github.com/parteekcoder/video-chat-webRTC/tree/master/project-images/2.png)
+<img src="https://github.com/parteekcoder/video-chat-webRTC/tree/master/project-images/2.png"/>
 
 - Room Page - On sharing screen video of that users takes major part of the screen to enlarge the video
-
-![Room Page](https://github.com/parteekcoder/video-chat-webRTC/tree/master/project-images/3.png)
+<img src="https://github.com/parteekcoder/video-chat-webRTC/tree/master/project-images/3.png"/>
 
 
 ## To start the project
