@@ -9,19 +9,21 @@ import { Chat } from "../components/chat/Chat";
 
 function Room() {
   const { id } = useParams()
-  const { ws,chat, me, stream, peers,toggleChat, shareScreen, screenStream, screenSharingId, setRoomId } = useContext(RoomContext)
+  const { ws, chat, me, stream, peers, toggleChat, shareScreen, screenStream, screenSharingId, setRoomId } = useContext(RoomContext)
 
   useEffect(() => {
     if (me) me.on('open', () => {
-
       ws.emit('join-room', { roomId: id, peerId: me._id })
     })
-  }, [id, me, ws])
+  }, [me, id])
+
   useEffect(() => {
     setRoomId(id);
   }, [id, setRoomId]);
   const screenSharingVideo = me?.id === screenSharingId ? screenStream : peers[screenSharingId]?.stream
   const { [screenSharingId]: sharing, ...peersToShow } = peers
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex grow">
@@ -38,11 +40,11 @@ function Room() {
           ))}
         </div>
         {
-          chat.isChatOpen && ( <div className="border-l-2 z-50 py-28">
-          <Chat />
-        </div>)
+          chat.isChatOpen && (<div className="border-l-2 z-50 py-28">
+            <Chat />
+          </div>)
         }
-       
+
       </div>
 
       <div className="fixed bottom-0 px-6 py-5 h-28 w-full flex justify-center border-t-2">
